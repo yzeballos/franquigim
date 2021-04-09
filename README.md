@@ -51,8 +51,10 @@ INSERT INTO `franquigimsch`.`afiliado` (`id`, `nombre`, `plan`, `descuento`) VAL
 ```
 El servidor de base de datos MySql se asume en el puerto estandar (3306).
 
-Importante: En "./franquigim/src/conf/persist.xml" Se debe agregar las propiedades de javax.persistence.jdbc.user y javax.persistence.jdbc.password, que en este ejemplo
-tienen el valor de "root" para poder acceder a la base de datos MySql.
+Importante: En "./franquigim/src/conf/persist.xml" Se podria cambiarr las propiedades de javax.persistence.jdbc.user y javax.persistence.jdbc.password, que en este ejemplo tienen el valor de "root".
+
+De todas formas como no se incluye el script para generar el proyecto, no sirve de nada cambiar los valores en el src.
+
 ```
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/franquigimsch?useSSL=false"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
@@ -60,11 +62,12 @@ tienen el valor de "root" para poder acceder a la base de datos MySql.
       <property name="javax.persistence.jdbc.password" value="root"/>
 ```
 
+COMPILACION
+
+   NO se incluye el script para generar el proyecto. (PENDIENTE)
+
 INSTALACION Y EJECCUION
 
-Compilacion
-
-NO se incluye el script para generar el proyecto.
 
 IMPORTANTE:
 el persistance.xml esta configurado tambien para que el acceso a mysql tenga user y pass "root", y no se puede cambiar
@@ -77,6 +80,7 @@ Suponiendo un Glassfish, hay que ir al directorio de instalacion del glassfish p
 ```
 ./bin/asadmin deploy /home/yasimz/NetBeansProjects/franquigim/dist/franquigim.war
 ```
+
 Abriendo un navegador en: http://localhost:8080/franquigim/
 
 Importante:
