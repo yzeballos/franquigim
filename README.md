@@ -81,7 +81,7 @@ Suponiendo un Glassfish, hay que ir al directorio de instalacion del glassfish p
 ./bin/asadmin deploy /home/yasimz/NetBeansProjects/franquigim/dist/franquigim.war
 ```
 
-Abriendo un navegador en: http://localhost:8080/franquigim/
+Abriendo un navegador en http://localhost:8080/franquigim/ se ejecuta la aplicacion.
 
 Importante:
 Errores importantes conocidos:
