@@ -1,7 +1,13 @@
 ## franquigim
-proyecto de muestra JSF JPA con Java
+Proyecto de muestra JSF JPA con Java
 
-El ambiente de prueba fue un Linux/Ubuntu con un server GlassFish Server 5.1.0:
+Para descargar el projecto desde github hacer, abrir un terminal y en un directorio cualquiera:
+
+```
+git clone git@github.com:yzeballos/franquigim.git franquigim
+```
+
+Como el ambiente de prueba fue un Linux/Ubuntu con un server GlassFish Server 5.1.0:
 escuchando en el puerto 8080.
 
 En el caso de glassfish se debe poner el jar
