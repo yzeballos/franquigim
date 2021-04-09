@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>    
+        <title>Crear nueva sucursal</title>
+        <h:outputStylesheet name="/css/bootstrap.min.css"/>
+    </h:head>
+    <h:body>
+        <h:form id="form" class="form-horizontal">
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div  class="col-sm-4">
+                    <h2 style="text-align: center">Ingrese los siguientes campos</h2>
+                </div>
+            </div>
+            <hr/>
+            <div class="form-group">
+                <h:outputLabel for="username" class="control-label col-sm-4">Nombre</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:inputText id="name-id" value="#{beanSucursal.nombre}" class="form-control" validatorMessage="El nombre es requerido">
+                        <f:validateRequired />
+                    </h:inputText>
+                </div>
+            </div>                       
+            <div class="form-group">
+                <h:outputLabel for="airelibre" class="control-label col-sm-4">Aire Libre</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:selectBooleanCheckbox id="airelibre-id" value="#{beanSucursal.airelibre}" class="form-control" validatorMessage="Airelibre is required">
+                        <f:validateRequired/>
+                    </h:selectBooleanCheckbox>
+                </div>                            
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="longitud" class="control-label col-sm-4">Longitud</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:inputText id="longitud-id" value="#{beanSucursal.longitud}" class="form-control" validatorMessage="Longitud is required (-180, 80)">
+                        <f:validateDoubleRange minimum="-180" maximum="80" />
+                        <f:validateRequired/>
+                    </h:inputText>
+                </div>                            
+            </div>
+            <div class="form-group">
+                <h:outputLabel for="latitud" class="control-label col-sm-4">Latitud</h:outputLabel>
+                <div class="col-sm-4">
+                    <h:inputText id="latitud-id" value="#{beanSucursal.latitud}" class="form-control" validatorMessage="Latitud es requerido (-90, 90)">
+                        <f:validateDoubleRange minimum="-90" maximum="90" />
+                        <f:validateRequired/>
+                    </h:inputText>
+                </div>                            
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    <div class="col-sm-2">
+                        <h:commandButton value="Guardar" action="#{beanSucursal.save()}" class="btn btn-success" style="width: 80px;"></h:commandButton>
+                    </div>
+                    <div class="col-sm-1">
+                    </div>
+                    <div class="col-sm-2">
+                        <h:link outcome="index" value="Volver a la pagina principal" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
