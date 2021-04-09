@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Sucursales</title>
+        <h:outputStylesheet name="/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="./css/comun.css"/>
+        <style type="text/css">
+            
+        </style>
+        <script type="text/javascript" language="javascript">
+            function calledOnLoad() {
+                map = new OpenLayers.Map("mapdiv");
+                map.addLayer(new OpenLayers.Layer.OSM());
+                var lonCenter = -56.178;
+                var latCenter = -34.907;
+                markersinfo = #{beanSucursal.getJsonList()};
+                if (markersinfo.length > 0) {
+                    lonCenter = markersinfo[0]['longitud']
+                    latCenter = markersinfo[0]['latitud']
+                }
+                var lonLatCenter = new OpenLayers.LonLat(lonCenter, latCenter)
+                        .transform(
+                                new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                                map.getProjectionObject() // to Spherical Mercator Projection
+                                );
+
+                var zoom = 8; //14 es un valor razonable para que se vea detalle
+
+                var markers = new OpenLayers.Layer.Markers("Markers");
+                map.addLayer(markers);
+                map.setCenter(lonLatCenter, zoom);
+
+                var API_Key = "d6c7a19f5115c466c4791680f7a1815d";
+                const Http = new XMLHttpRequest();
+                const urlpre = 'https://api.openweathermap.org/data/2.5/weather?'
+                const url = urlpre + 'units=metric' + '&amp;lat=' + latCenter + '&amp;lon=' + lonCenter + '&amp;appid=' + API_Key;
+                // jason.weather[0].id esto nos da el codigo con el javascript parseado
+                Http.open("GET", url);
+                Http.send();
+
+                // se anaden los markers cuando la llamada del clima por ajax responda
+                Http.onreadystatechange = (e) => {
+                    json_clima = JSON.parse(Http.responseText);
+                    codigo_clima = json_clima.weather[0].id;
+                    // ver https://openweathermap.org/weather-conditions
+                    // menos que 800 es un clima 'hostil' aunque tal vez algunos de cod 7xx no esten mal
+                    for (let markerinfo of markersinfo) {
+                        airelibre = markerinfo['habilitada'];
+                        longitud = markerinfo['longitud'];
+                        latitud = markerinfo['latitud'];
+                        var lonLat = new OpenLayers.LonLat(longitud, latitud)
+                                .transform(
+                                        new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+                                        map.getProjectionObject() // to Spherical Mercator Projection
+                                        );
+                        //tipoIcono =
+                        icon1 = new OpenLayers.Icon("./js/img/marker_g.png");
+                        if (!airelibre) {
+                            icon1 = new OpenLayers.Icon("./js/img/marker.png");
+                        }
+                        ;
+                        esta_complicado = codigo_clima &lt; 800;
+                        if (esta_complicado) {
+                            icon1 = new OpenLayers.Icon("./js/img/marker.png");
+                        }
+                        ;
+                        marker1 = new OpenLayers.Marker(lonLat, icon1);
+                        markers.addMarker(marker1);
+                    }
+                    ;
+                };
+            }
+        </script>
+    </h:head>
+    <h:body onload="calledOnLoad();">
+
+        <script src="./js/OpenLayers.js"></script>
+
+        <div >
+            <h:graphicImage value="resources/images/logo.png" alt="logo" class="center" />
+        </div>
+        <h:form id="formId">
+            <h:outputText id="textId" value=""/>
+        </h:form>
+
+        <h:form>
+            <center>
+                <h2><h:outputText value="Sucursales"/></h2>
+            </center>
+            <h:dataTable binding="#{table}" value="#{beanSucursal.sucursalesList()}" var="u" class="table table-striped table-hover table-bordered" >
+                <h:column>
+                    <f:facet name="header">Nombre</f:facet>
+                    <h:outputText value="#{u.nombre}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Aire libre</f:facet>
+                    <h:outputText value="#{beanSucursal.obtenerAireLibreMsg(u.airelibre)}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Longitud</f:facet>
+                    <h:outputText value="#{u.longitud}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Latitud</f:facet>
+                    <h:outputText value="#{u.latitud}"/>
+                </h:column>
+                <h:column> 
+                    <f:facet name="header">Modificar</f:facet>
+                    <h:commandButton action = "#{beanSucursal.edit(u.id)}" value="Modificar" class="btn btn-primary"> 
+                    </h:commandButton>
+                </h:column>
+                <h:column> 
+                    <f:facet name="header">Borrar</f:facet>
+                    <h:commandButton action = "#{beanSucursal.delete(u.id)}" value="Borrar" class="btn btn-danger"> 
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            <center><h:commandButton action = "create.xhtml?faces-redirect=true" value="Crear nueva sucursal" class="btn btn-success botonCrear"></h:commandButton> </center>
+        </h:form>
+
+        <div id="mapdiv" style="height:400px; width: 1000px; margin-left:auto !important; margin-right:auto !important;"></div>
+        Un marcador verde significa habilitado para aire libre. 
+        Un marcador rojo significa no habilitado para aire libre o habilitado pero el clima no lo permite.
+
+        <h:form>
+            <center>
+                <h2><h:outputText value="Afiliados"/></h2>
+            </center>
+            <h:dataTable binding="#{table2}" value="#{beanAfiliado.afiliadosList()}" var="a" class="table table-striped table-hover table-bordered" >
+                <h:column>
+                    <f:facet name="header">Nombre</f:facet>
+                    <h:outputText value="#{a.nombre}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Plan</f:facet>
+                    <h:outputText value="#{beanAfiliado.getPlanNombre(a.plan)}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Descuento</f:facet>
+                    <h:outputText value="#{a.descuento}"/>
+                </h:column>
+                <h:column> 
+                    <f:facet name="header">Modificar</f:facet>
+                    <h:commandButton action = "#{beanAfiliado.edit(a.id)}" value="Modificar" class="btn btn-primary"> 
+                    </h:commandButton>
+                </h:column>
+                <h:column> 
+                    <f:facet name="header">Borrar</f:facet>
+                    <h:commandButton action = "#{beanAfiliado.delete(a.id)}" value="Borrar" class="btn btn-danger"> 
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            <center><h:commandButton action = "createAfiliado.xhtml?faces-redirect=true" value="Crear nuevo afiliado" class="btn btn-success botonCrear"></h:commandButton> </center>
+        </h:form>
+        
+    </h:body>
+</html>
