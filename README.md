@@ -1,4 +1,4 @@
-# franquigim
+## franquigim
 proyecto de muestra JSF JPA con Java
 
 El ambiente de prueba fue un Linux/Ubuntu con un server GlassFish Server 5.1.0:
