@@ -60,19 +60,24 @@ tienen el valor de "root" para poder acceder a la base de datos MySql.
       <property name="javax.persistence.jdbc.password" value="root"/>
 ```
 
-Para compilar el proyecto y generar el .war:
-```
-ant -f ./franquigim -Dnb.internal.action.name=rebuild -DforceRedeploy=false -Dbrowser.context=./franquigim clean dist
-```
-El .war deberia de haber quedado en: ./dist
+INSTALACION Y EJECCUION
 
-Se corre con:
-```
-ant -f ./franquigim -Dnb.internal.action.name=run -Ddirectory.deployment.supported=true -DforceRedeploy=false -Dnb.wait.for.caches=true -Dbrowser.context=./franquigim run
-```
-Abriendo automaticamente un navegador en: http://localhost:8080/franquigim/
+Compilacion
 
-Para que sea otra la url por defecto, hay que editar la propiedad: deploy.ant.client.url de ./franquigim/build.xml
+NO se incluye el script para generar el proyecto.
+
+IMPORTANTE:
+el persistance.xml esta configurado tambien para que el acceso a mysql tenga user y pass "root", y no se puede cambiar
+ya que no se incluye el script para generar el proyecto (.war).
+
+Por eso se incluye el .war en el dist, que es: dist/franquigim.war
+
+Suponiendo un Glassfish, hay que ir al directorio de instalacion del glassfish por consola y hacer:
+
+```
+./bin/asadmin deploy /home/yasimz/NetBeansProjects/franquigim/dist/franquigim.war
+```
+Abriendo un navegador en: http://localhost:8080/franquigim/
 
 Importante:
 Errores importantes conocidos:
