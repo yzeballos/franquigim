@@ -11,7 +11,7 @@
     <description>Builds, tests, and runs the project franquigim.</description>
     <import file="nbproject/build-impl.xml"/>
     <property name="lib" location="lib"/>
-    <property name="JdbcDriver" value="mysql-connector-java-8.0.18.jar"/>
+    <property name="JdbcDriver" value="mysql-connector-java-8.0.22.jar"/>
     <property name="deploy.ant.client.url" value="http://localhost:8080/franquigim/"/>
     <!--
 
